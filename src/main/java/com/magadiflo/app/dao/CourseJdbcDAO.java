@@ -3,6 +3,7 @@ package com.magadiflo.app.dao;
 import com.magadiflo.app.model.Course;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -46,7 +47,14 @@ public class CourseJdbcDAO implements DAO<Course> {
 
     @Override
     public Optional<Course> get(Integer id) {
-        return Optional.empty();
+        String sql = "SELECT id, title, description, link FROM course AS c WHERE c.id = ?";
+        Course course = null;
+        try{
+            course = this.jdbcTemplate.queryForObject(sql, this.rowMapper, id);
+        } catch (DataAccessException e) {
+            LOGGER.info("Course not found: {}", id);
+        }
+        return Optional.ofNullable(course);
     }
 
     @Override
