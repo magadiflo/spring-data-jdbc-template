@@ -18,7 +18,12 @@ public class SpringDataJdbcTemplateApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SpringDataJdbcTemplateApplication.class, args);
-        System.out.println("------------------------------------------------\n");
+        System.out.println("Create course ------------------------------------------------\n");
+        Course springAngular = new Course("Spring Boot + Angular", "New Course", "https://www.magadiflo.dev/courses");
+        dao.create(springAngular);
+
+
+        System.out.println("All course ------------------------------------------------\n");
 
         List<Course> courses = dao.list();
         courses.forEach(System.out::println);
