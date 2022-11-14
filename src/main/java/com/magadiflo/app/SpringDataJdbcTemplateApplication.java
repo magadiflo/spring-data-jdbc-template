@@ -22,9 +22,18 @@ public class SpringDataJdbcTemplateApplication {
         Course springAngular = new Course("Spring Boot + Angular", "New Course", "https://www.magadiflo.dev/courses");
         dao.create(springAngular);
 
+        System.out.println("One course ------------------------------------------------\n");
+        Course course = dao.get(1).orElseThrow();
+        System.out.println(course);
 
-        System.out.println("All course ------------------------------------------------\n");
+        System.out.println("Updated course ------------------------------------------------\n");
+        springAngular.setDescription("Learn tobuild Angular apps that talk to Spring Boot");
+        dao.updated(springAngular, 6);
 
+        System.out.println("Delete course ------------------------------------------------\n");
+        dao.delete(4);
+
+        System.out.println("All courses ------------------------------------------------\n");
         List<Course> courses = dao.list();
         courses.forEach(System.out::println);
     }

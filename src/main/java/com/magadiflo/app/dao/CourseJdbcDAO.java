@@ -39,6 +39,8 @@ public class CourseJdbcDAO implements DAO<Course> {
     @Override
     public void create(Course course) {
         String sql = "INSERT INTO course(title, description, link) VALUES(?, ?, ?)";
+
+        //  this.jdbcTemplate.update(...), quizás parezca que solo es para actualizar, pero en realidad también es para insertar y eliminar
         int affectedRows = this.jdbcTemplate.update(sql, course.getTitle(), course.getDescription(), course.getLink());
         if (affectedRows == 1) {
             LOGGER.info("New course created: {}", course.getTitle());
@@ -59,11 +61,18 @@ public class CourseJdbcDAO implements DAO<Course> {
 
     @Override
     public void updated(Course course, Integer id) {
-
+        String sql = "UPDATE course SET title = ?, description = ?, link = ? WHERE id = ?";
+        int affectedRows = this.jdbcTemplate.update(sql , course.getTitle(), course.getDescription(), course.getLink(), id);
+        if(affectedRows == 1) {
+            LOGGER.info("Course updated: {}", course.getTitle());
+        }
     }
 
     @Override
     public void delete(Integer id) {
-
+        int affectedRows = this.jdbcTemplate.update("DELETE FROM course WHERE id = ?", id);
+        if(affectedRows == 1) {
+            LOGGER.info("Course deleted: {}", id);
+        }
     }
 }
